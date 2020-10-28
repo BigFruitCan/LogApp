@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,14 +17,31 @@ import java.util.List;
 import java.util.Set;
 
 public class AppInfoGetService extends Service {
-    public AppInfoGetService() {
+    private static final String TAG = "AppInfoGetService";
+
+    @Override
+    public void onCreate() {
+        Log.e(TAG, "OnCreate__Running");
+        super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        //执行文件的下载或者播放等操作
+        Log.e(TAG, "OnStartCommand__Running");
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.e(TAG, "OnBind__Running");
+        return null;
+    }
 
-
-
+    @Override
+    public void onDestroy() {
+        Log.e(TAG, "OnDestroy__Running");
+        super.onDestroy();
     }
 
 

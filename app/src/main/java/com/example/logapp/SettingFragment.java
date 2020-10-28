@@ -13,6 +13,8 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 
+import com.example.logapp.service.AppInfoGetService;
+
 public class SettingFragment extends Fragment {
 
     private View view;
@@ -36,12 +38,15 @@ public class SettingFragment extends Fragment {
         //选择后台实时监控后,启动服务开始监控数据
         Switch switch1 = (Switch) view.findViewById(R.id.switch1);
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            Intent intent = new Intent(getActivity(), AppInfoGetService.class);
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
                     //Todo 开启服务
+                    getActivity().startService(intent);
                 }else {
                     //Todo 关闭服务
+                    getActivity().stopService(intent);
                 }
             }
         });

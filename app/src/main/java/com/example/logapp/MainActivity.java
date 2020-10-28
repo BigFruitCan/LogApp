@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         }*/
 
-        //收集获取APP信息
+        /*//收集获取APP信息
         List<ApplicationInfo> applicationInfoList = queryFilterAppInfo();
         System.out.println("长度：" + applicationInfoList.size());
         for(ApplicationInfo applicationInfo : applicationInfoList) {
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             db.insert("app_info", null, values);
         }
         //关闭数据库
-        db.close();
+        db.close();*/
     }
 
     //登录跳转button
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //获取手机app运行数据 (默认为一天)
+    /*//获取手机app运行数据 (默认为一天)
     public List<UsageStats> getAppRunInfo() {
         UsageStatsManager m = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
         long time = System.currentTimeMillis() - 24*60*60*1000;
@@ -148,6 +148,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return applicationInfos;
-    }
+    }*/
 
 }
