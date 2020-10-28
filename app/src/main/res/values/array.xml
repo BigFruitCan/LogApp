@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="font_style">
+        <item>常规</item>
+        <item>粗体</item>
+        <item>斜体</item>
+    </string-array>
+
+    <string-array name="png_list">
+        <item>气球</item>
+        <item>树</item>
+        <item>兔子</item>
+    </string-array>
+
+    <string-array name="chart_list">
+        <item>饼图</item>
+        <item>柱状图</item>
+        <item>条形图</item>
+    </string-array>
+
+    <string-array name="listView_list">
+        <item>应用列表</item>
+        <item>包名列表</item>
+        <item>应用图标列表</item>
+    </string-array>
+</resources>

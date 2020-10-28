@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bk2k"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/login_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="#D7FFFFFF"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="5dp">
+
+        <FrameLayout
+            android:id="@+id/usename_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/usename"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:inputType="number"
+                android:maxLength="20"
+                android:paddingLeft="55dp"
+                android:paddingRight="60dp" />
+
+            <ImageView
+                android:layout_width="31dp"
+                android:layout_height="35dp"
+                android:layout_gravity="left|center_horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/user"
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="+62"
+                android:textSize="18sp"
+                android:visibility="invisible" />
+
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/usecode_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/usename_layout"
+            android:layout_marginTop="6dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="fill_parent"
+                android:layout_height="55dp"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:paddingLeft="55dp"
+                android:paddingRight="60dp" />
+
+            <ImageView
+                android:layout_width="31dp"
+                android:layout_height="35dp"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/password" />
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="fill_parent"
+            android:layout_height="44dp"
+            android:layout_below="@id/usecode_layout"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_shape"
+            android:gravity="center"
+            android:onClick="sendMessage"
+            android:text="登录"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/login_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login"
+            android:layout_alignRight="@id/login"
+            android:background="#00000000"
+            android:text="忘记密码"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login"
+            android:layout_alignLeft="@id/login"
+            android:background="#00000000"
+            android:gravity="left|center_vertical"
+            android:text="注册"
+            android:textSize="16sp"
+            android:visibility="visible" />
+
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
