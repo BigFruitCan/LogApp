@@ -17,7 +17,11 @@
         <service
             android:name=".service.AppInfoGetService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+        <service
+            android:name=".service.AppRunSeqGetService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity android:name=".AppDetailActivity" />
         <activity android:name=".HomeActivity" />

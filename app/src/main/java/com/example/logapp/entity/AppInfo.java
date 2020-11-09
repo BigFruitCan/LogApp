@@ -1,7 +1,5 @@
 package com.example.logapp.entity;
 
-import android.graphics.drawable.Drawable;
-
 public class AppInfo {
 
     //通过PackageManager获取所有app信息

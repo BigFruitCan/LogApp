@@ -5,15 +5,20 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 
 import com.example.logapp.service.AppInfoGetService;
+import com.example.logapp.service.AppRunSeqGetService;
+
+import java.util.Calendar;
 
 public class SettingFragment extends Fragment {
 
@@ -51,7 +56,17 @@ public class SettingFragment extends Fragment {
             }
         });
 
+        Button button20 = (Button) view.findViewById(R.id.button20);
+        button20.setOnClickListener(new View.OnClickListener() {
+            Intent intent2 = new Intent(getActivity(), AppRunSeqGetService.class);
+            @Override
+            public void onClick(View v) {
+                getActivity().startService(intent2);
+            }
+        });
 
+        Long s = Calendar.getInstance().getTimeInMillis();
+        Log.e("time", s + "");
 
         return view;
     }

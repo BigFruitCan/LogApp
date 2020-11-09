@@ -18,16 +18,32 @@ import java.util.Set;
 
 public class AppInfoGetService extends Service {
     private static final String TAG = "AppInfoGetService";
+    private boolean flag = true;
 
     @Override
     public void onCreate() {
         Log.e(TAG, "OnCreate__Running");
         super.onCreate();
+
+        //创建一个线程执行任务（每隔1分钟执行一次）
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (flag){
+                    try {
+                        Log.e(TAG,"执行一次");
+                        Thread.sleep(5*1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Log.e(TAG,"执行结束");
+            }
+        }).start();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //执行文件的下载或者播放等操作
         Log.e(TAG, "OnStartCommand__Running");
         return super.onStartCommand(intent, flags, startId);
     }
@@ -41,6 +57,7 @@ public class AppInfoGetService extends Service {
     @Override
     public void onDestroy() {
         Log.e(TAG, "OnDestroy__Running");
+        flag = false;
         super.onDestroy();
     }
 
