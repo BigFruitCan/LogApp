@@ -35,26 +35,36 @@ public class AppRunSeqGetService extends Service {
 
         //查询从某一时间段到另一时间段的总运行时间
         Long currentTime = Calendar.getInstance().getTimeInMillis();
+        Long startTime = currentTime - 24*60*60*1000;
         HashMap<String, String> packagesMap = getAllPackages();
         for(String s : packagesMap.keySet()) {
             Log.e(s,packagesMap.get(s));
         }
-        HashMap<Integer, RunInfo> infoMap = getTimeSpent(this.getBaseContext(),packagesMap.keySet(),1604810582000L,currentTime);
+        HashMap<Integer, RunInfo> infoMap = getTimeSpent(this.getBaseContext(),packagesMap.keySet(),startTime,currentTime);
         for(Integer i : infoMap.keySet()) {
             infoMap.get(i).setAppName(packagesMap.get(infoMap.get(i).getPackageName()));
             Log.e(i+ "",infoMap.get(i).toString());
         }
         Log.e(TAG,"from 1604810582000 to " + currentTime);
 
-        //将结果保存到数据库中
+        //获取当前数据库中最新的结果（只保存最新结果之后的数据，防止数据重复）
         RunInfoDBHelper runInfoDBHelper = new RunInfoDBHelper(this.getBaseContext(), "appRunSeq_db",null,1);
         SQLiteDatabase db = runInfoDBHelper.getWritableDatabase();
-        //将之前数据删除（可注释掉）
-        /*db.delete("app_run_info", null, null);*/
+        Cursor cursor1 = db.rawQuery("select * from app_run_info order by aid desc limit 0,1", null);
+        int lastStartTimeStamp = 0;
+        if(cursor1 != null && cursor1.getCount() > 0) {   //判断结果集是否有效
+            while (cursor1.moveToNext()) {   //游标是否继续向下移动
+                lastStartTimeStamp = cursor1.getInt(cursor1.getColumnIndex("start_time"));
+            }
+        }
+
         //存入新的数据
         for(Integer i : infoMap.keySet()){
             ContentValues values = new ContentValues();
             RunInfo runInfo = infoMap.get(i);
+            if(lastStartTimeStamp > runInfo.getStartStamp()) {
+                continue;   //时间小于最后一条记录的时间，则不保存
+            }
             values.put("app_name", runInfo.getAppName());
             values.put("package_name", runInfo.getPackageName());
             values.put("start_time", runInfo.getStartStamp());

@@ -7,11 +7,14 @@ import android.app.usage.UsageStatsManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -34,10 +37,70 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //打开访问功能,若已打开过，则注掉此段代码
-        /*if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
-            startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-        }*/
+        //定义一个setting记录APP是几次启动！！！
+        SharedPreferences setting = getSharedPreferences("com.example.logapp", 0);
+        Boolean user_first = setting.getBoolean("FIRST", true);
+        if (user_first) {   // 第一次则跳转到欢迎页面
+            //打开访问功能,若已打开过，则注掉此段代码
+            setting.edit().putBoolean("FIRST",false).commit();
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+                startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+            }
+
+            //收集获取APP信息
+            List<ApplicationInfo> applicationInfoList = queryFilterAppInfo();
+            //所有数据封装成appInfo类(这里获取的是所有能打开app的应用程序)
+            ArrayList<AppInfo> appInfoList = new ArrayList<>();
+            for(ApplicationInfo applicationInfo : applicationInfoList) {
+                AppInfo appInfo = new AppInfo();
+                appInfo.setAppName(applicationInfo.loadLabel(getPackageManager()).toString());
+                appInfo.setPackageName(applicationInfo.packageName);
+                appInfoList.add(appInfo);
+            }
+            //收集获取App运行数据
+            List<UsageStats> usageStatsList = getAppRunInfo();
+            System.out.println("长度：" + usageStatsList.size());
+            for(UsageStats usageStats : usageStatsList) {
+                Log.e(usageStats.getPackageName(),usageStats.getLastTimeStamp() + "");
+            }
+            for(UsageStats usageStats : usageStatsList) {
+                for(AppInfo appInfo : appInfoList) {
+                    if(appInfo.packageName.equals(usageStats.getPackageName())) {
+                        appInfo.setFirstTimeStamp(usageStats.getFirstTimeStamp());
+                        appInfo.setLastTimeUsed(usageStats.getLastTimeUsed());
+                        appInfo.setTotalTimeInForeground(usageStats.getTotalTimeInForeground());
+                        try {
+                            Field field = usageStats.getClass().getDeclaredField("mLaunchCount");
+                            appInfo.setAppLaunchCount(field.getInt(usageStats));
+                        } catch (NoSuchFieldException | IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            //封装数据存入SQLite
+            SqliteDBHelper sqliteDBHelper = new SqliteDBHelper(MainActivity.this, "appInfo_db",null,1);
+            SQLiteDatabase db = sqliteDBHelper.getWritableDatabase();
+            //将之前数据删除（可注释掉）
+            db.delete("app_info", null, null);
+            //存入新的数据
+            for(AppInfo appInfo : appInfoList){
+                ContentValues values = new ContentValues();
+                values.put("app_name", appInfo.getAppName());
+                values.put("package_name", appInfo.getPackageName());
+                values.put("first_running_time", appInfo.getFirstTimeStamp());
+                values.put("last_running_time", appInfo.getLastTimeUsed());
+                values.put("lunch_count", appInfo.getAppLaunchCount());
+                values.put("total_use_time", appInfo.getTotalTimeInForeground());
+                //数据库执行插入命令
+                db.insert("app_info", null, values);
+            }
+            //关闭数据库
+            db.close();
+        } else {
+            //如果是第二次启动则不设置其他
+        }
 
         /*//收集获取APP信息
         List<ApplicationInfo> applicationInfoList = queryFilterAppInfo();
@@ -108,10 +171,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /*//获取手机app运行数据 (默认为一天)
+    //获取手机app运行数据 (默认为一周)
     public List<UsageStats> getAppRunInfo() {
         UsageStatsManager m = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
-        long time = System.currentTimeMillis() - 24*60*60*1000;
+        long time = System.currentTimeMillis() - 7*24*60*60*1000;
         List<UsageStats> list = m.queryUsageStats(UsageStatsManager.INTERVAL_BEST, time, System.currentTimeMillis());
         return list;
     }
@@ -148,6 +211,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return applicationInfos;
-    }*/
+    }
 
 }

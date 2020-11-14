@@ -1,11 +1,11 @@
 package com.example.logapp;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +15,14 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 
+import com.bin.david.form.core.SmartTable;
+import com.example.logapp.dao.RunInfoDBHelper;
+import com.example.logapp.entity.TableInfo;
 import com.example.logapp.service.AppInfoGetService;
 import com.example.logapp.service.AppRunSeqGetService;
 
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingFragment extends Fragment {
 
@@ -65,10 +69,29 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        Long s = Calendar.getInstance().getTimeInMillis();
-        Log.e("time", s + "");
-
         return view;
     }
+
+    /*public List<TableInfo> getList() {
+        List<TableInfo> list = new ArrayList<>();
+
+        //数据库中查询数据
+        RunInfoDBHelper runInfoDBHelper = new RunInfoDBHelper(view.getContext(), "appRunSeq_db",null,1);
+        SQLiteDatabase db = runInfoDBHelper.getWritableDatabase();
+        Cursor cursor1 = db.rawQuery("select * from app_run_info order by aid desc limit 0,40", null);
+        if(cursor1 != null && cursor1.getCount() > 0) {   //判断结果集是否有效
+            while (cursor1.moveToNext()) {   //游标是否继续向下移动
+                TableInfo info = new TableInfo();
+                info.setName(cursor1.getString(cursor1.getColumnIndex("app_name")));
+                info.setStart_time(cursor1.getLong(cursor1.getColumnIndex("start_time")));
+                info.setEnd_time(cursor1.getLong(cursor1.getColumnIndex("end_time")));
+                info.setUse_time(cursor1.getLong(cursor1.getColumnIndex("use_time")));
+                list.add(info);
+            }
+        }
+
+
+        return list;
+    }*/
 
 }

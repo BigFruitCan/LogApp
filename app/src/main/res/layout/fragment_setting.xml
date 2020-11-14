@@ -11,16 +11,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textSize="65px"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="设置" />
 
-            <ListView
-                android:id="@+id/list_view"
-                android:layout_width="match_parent"
-                android:layout_height="201dp"
-                android:entries="@array/listView_list" />
-        </RelativeLayout>
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="201dp"
+            android:entries="@array/listView_list" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,7 +48,8 @@
                 android:id="@+id/button20"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="刷新" />
+
         </LinearLayout>
 
     </LinearLayout>
