@@ -1,5 +1,6 @@
 package com.example.logapp;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -19,8 +20,11 @@ import android.widget.Spinner;
 import com.bin.david.form.core.SmartTable;
 import com.example.logapp.dao.RunInfoDBHelper;
 import com.example.logapp.entity.TableInfo;
+import com.example.logapp.service.AppRunSeqGetService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -51,6 +55,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        //查询按钮
         Button button1 = (Button) view.findViewById(R.id.button1);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,15 +63,41 @@ public class HomeFragment extends Fragment {
                 EditText editText5 = (EditText) view.findViewById(R.id.editText5);
                 String s = editText5.getText().toString();
                 Spinner spinner1 = (Spinner) view.findViewById(R.id.spinner1);
-                if(s != null && s != ""){
+                if(s != null && s != "" && !s.equals("在这里输入App名称...")){
                     Log.e("spinner",spinner1.getSelectedItem() + "");
                     List<TableInfo> tableInfoList = getList(s,0L,0L,30);
+                    SmartTable table = (SmartTable<TableInfo>) view.findViewById(R.id.table2);
+                    table.setData(tableInfoList);
+                }else {
+                    Log.e("query","未查询");
+                }
+            }
+        });
+
+
+        //刷新按钮
+        Button button5 = (Button) view.findViewById(R.id.button5);
+        button5.setOnClickListener(new View.OnClickListener() {
+            Intent intent2 = new Intent(getActivity(), AppRunSeqGetService.class);
+            @Override
+            public void onClick(View v) {
+                //调用服务更新数据库
+                getActivity().startService(intent2);
+
+                //更新list
+                EditText editText5 = (EditText) view.findViewById(R.id.editText5);
+                String s = editText5.getText().toString();
+                if(s != null && s != "" && !s.equals("在这里输入App名称...")){
+                    List<TableInfo> tableInfoList = getList(s,0L,0L,30);
+                    SmartTable table = (SmartTable<TableInfo>) view.findViewById(R.id.table2);
+                    table.setData(tableInfoList);
+                }else{
+                    List<TableInfo> tableInfoList = getList(null,0L,0L,30);
                     SmartTable table = (SmartTable<TableInfo>) view.findViewById(R.id.table2);
                     table.setData(tableInfoList);
                 }
             }
         });
-
 
         return view;
     }
@@ -113,8 +144,8 @@ public class HomeFragment extends Fragment {
             while (cursor1.moveToNext()) {   //游标是否继续向下移动
                 TableInfo info = new TableInfo();
                 info.setName(cursor1.getString(cursor1.getColumnIndex("app_name")));
-                info.setStart_time(cursor1.getLong(cursor1.getColumnIndex("start_time")));
-                info.setEnd_time(cursor1.getLong(cursor1.getColumnIndex("end_time")));
+                info.setStart_time(times(cursor1.getLong(cursor1.getColumnIndex("start_time"))));
+                info.setEnd_time(times(cursor1.getLong(cursor1.getColumnIndex("end_time"))));
                 info.setUse_time(cursor1.getLong(cursor1.getColumnIndex("use_time")));
                 list.add(info);
             }
@@ -122,6 +153,16 @@ public class HomeFragment extends Fragment {
         db.close();
         Log.e("查询结果",list.size() + "条数据");
         return list;
+    }
+
+    //将时间戳转换为时间
+    public static String times(Long time) {
+        if(time == 0L) {
+            return "-";
+        }
+        SimpleDateFormat sdr = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
+        String times = sdr.format(new Date(time));
+        return times;
     }
 
 }

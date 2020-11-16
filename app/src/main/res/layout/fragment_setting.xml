@@ -36,21 +36,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="后台实时监控服务" />
+                android:text="app运行后台监控服务(5min执行一次)" />
         </LinearLayout>
 
-        <LinearLayout
+        <Button
+            android:id="@+id/button7"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/button20"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="刷新" />
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="上传数据" />
 
     </LinearLayout>
 </FrameLayout>

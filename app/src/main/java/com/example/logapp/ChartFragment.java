@@ -1,17 +1,26 @@
 package com.example.logapp;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JsResult;
-import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.example.logapp.dao.SqliteDBHelper;
+import com.example.logapp.util.AcessData;
+import com.example.logapp.util.pieChart;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChartFragment extends Fragment {
 
@@ -23,39 +32,22 @@ public class ChartFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_chart, container, false);
         }
 
-        //初始化一个手机APP使用时间的饼图
-        webView = (WebView) view.findViewById(R.id.chart_web);
-        //进行webwiev的一堆设置
-        //开启本地文件读取（默认为true，不设置也可以）
-        webView.getSettings().setAllowFileAccess(true);
-        //开启脚本支持
-        webView.getSettings().setJavaScriptEnabled(true);
-        //设置编码
-        webView.getSettings().setDefaultTextEncodingName("utf-8");
-        // 设置可以支持缩放
-        webView.getSettings().setSupportZoom(true);
-        // 设置出现缩放工具
-        webView.getSettings().setBuiltInZoomControls(true);
-        // 清除浏览器缓存
-        webView.clearCache(true);
-        //  放在 assets目录
-        //获取Assets目录下的文件
-        /*webView.loadUrl("http://www.baidu.com");*/
-        webView.loadUrl("file:///android_asset/echart/pie-legend.html");
-        //在当前页面打开链接了
-        webView.setWebViewClient(new WebViewClient() {
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-        });
-        //js加上这个就好啦！
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                return super.onJsAlert(view, url, message, result);
-            }
-        });
+        webView = (WebView)view.findViewById(R.id.chart_web);
+
+        // 获取指定数据格式的数据,此处可以和外部交互
+        List<AcessData> datas = getWeekData();
+
+        // 进行WebView设置
+        WebSettings webSettings = webView.getSettings();
+
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setSupportZoom(true);
+        webSettings.setDisplayZoomControls(true);
+        // 给JavaScript传递生成的myLineChart的Option
+        webView.addJavascriptInterface(new pieChart(getContext(),datas), "myLine");
+        webView.loadUrl("file:///android_asset/js/pie-legend.html");
+        webView.setWebViewClient(new WebViewClient());
 
         return view;
     }
@@ -64,6 +56,32 @@ public class ChartFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ((ViewGroup) view.getParent()).removeView(view);
+    }
+
+    //数据库中获取数据
+    public List<AcessData> getWeekData() {
+        List<AcessData> data = new ArrayList<>();
+
+        //数据库中查询数据
+        SqliteDBHelper sqliteDBHelper = new SqliteDBHelper(getContext(), "appInfo_db",null,1);
+        SQLiteDatabase db = sqliteDBHelper.getWritableDatabase();
+
+        Cursor cursor1 = db.rawQuery("select * from app_info order by total_use_time desc", null);
+        if(cursor1 != null && cursor1.getCount() > 0) {   //判断结果集是否有效
+            while (cursor1.moveToNext()) {   //游标是否继续向下移动
+                Long useTime = cursor1.getLong(cursor1.getColumnIndex("total_use_time"));
+                if(useTime != 0){
+                    AcessData acessData = new AcessData();
+                    acessData.setName(cursor1.getString(cursor1.getColumnIndex("app_name")));
+                    acessData.setUseTime(useTime);
+                    data.add(acessData);
+                }
+            }
+        }
+        db.close();
+        Log.e("查询结果",data.size() + "条数据");
+
+        return data;
     }
 
 }

@@ -3,23 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChartFragment">
-
+    tools:context=".ForecastFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/chart_select_spinner"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:textSize="40sp" />
+
+        <Button
+            android:id="@+id/button6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/chart_list" />
+            android:text="预测" />
 
-        <WebView
-            android:id="@+id/chart_web"
-            android:layout_width="match_parent"
-            android:layout_height="600dp" />
     </LinearLayout>
+
 </FrameLayout>

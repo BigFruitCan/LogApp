@@ -102,64 +102,6 @@ public class MainActivity extends AppCompatActivity {
             //如果是第二次启动则不设置其他
         }
 
-        /*//收集获取APP信息
-        List<ApplicationInfo> applicationInfoList = queryFilterAppInfo();
-        System.out.println("长度：" + applicationInfoList.size());
-        for(ApplicationInfo applicationInfo : applicationInfoList) {
-            Log.e(applicationInfo.loadLabel(getPackageManager()).toString(),applicationInfo.packageName);//输出应用名+包名
-        }
-        //收集获取App运行数据
-        List<UsageStats> usageStatsList = getAppRunInfo();
-        System.out.println("长度：" + usageStatsList.size());
-        for(UsageStats usageStats : usageStatsList) {
-            Log.e(usageStats.getPackageName(),usageStats.getLastTimeStamp() + "");
-        }
-        //所有数据封装成appInfo类(这里获取的是所有能打开app的应用程序)
-        ArrayList<AppInfo> appInfoList = new ArrayList<>();
-        for(ApplicationInfo applicationInfo : applicationInfoList) {
-            AppInfo appInfo = new AppInfo();
-            appInfo.setAppName(applicationInfo.loadLabel(getPackageManager()).toString());
-            appInfo.setPackageName(applicationInfo.packageName);
-            appInfoList.add(appInfo);
-        }
-        for(UsageStats usageStats : usageStatsList) {
-            for(AppInfo appInfo : appInfoList) {
-                if(appInfo.packageName.equals(usageStats.getPackageName())) {
-                    appInfo.setFirstTimeStamp(usageStats.getFirstTimeStamp());
-                    appInfo.setLastTimeUsed(usageStats.getLastTimeUsed());
-                    appInfo.setTotalTimeInForeground(usageStats.getTotalTimeInForeground());
-                    try {
-                        Field field = usageStats.getClass().getDeclaredField("mLaunchCount");
-                        appInfo.setAppLaunchCount(field.getInt(usageStats));
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        //控制台打印LOG，可注释掉
-        for(AppInfo appInfo : appInfoList){
-            Log.e("",appInfo.toString());
-        }
-        //封装数据存入SQLite
-        SqliteDBHelper sqliteDBHelper = new SqliteDBHelper(MainActivity.this, "appInfo_db",null,1);
-        SQLiteDatabase db = sqliteDBHelper.getWritableDatabase();
-        //将之前数据删除（可注释掉）
-        db.delete("app_info", null, null);
-        //存入新的数据
-        for(AppInfo appInfo : appInfoList){
-            ContentValues values = new ContentValues();
-            values.put("app_name", appInfo.getAppName());
-            values.put("package_name", appInfo.getPackageName());
-            values.put("first_running_time", appInfo.getFirstTimeStamp());
-            values.put("last_running_time", appInfo.getLastTimeUsed());
-            values.put("lunch_count", appInfo.getAppLaunchCount());
-            values.put("total_use_time", appInfo.getTotalTimeInForeground());
-            //数据库执行插入命令
-            db.insert("app_info", null, values);
-        }
-        //关闭数据库
-        db.close();*/
     }
 
     //登录跳转button
@@ -171,11 +113,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //获取手机app运行数据 (默认为一周)
+    //获取手机app运行数据 (默认为一月)
     public List<UsageStats> getAppRunInfo() {
-        UsageStatsManager m = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
-        long time = System.currentTimeMillis() - 7*24*60*60*1000;
-        List<UsageStats> list = m.queryUsageStats(UsageStatsManager.INTERVAL_BEST, time, System.currentTimeMillis());
+        UsageStatsManager m=(UsageStatsManager)getApplicationContext().getSystemService(Context.USAGE_STATS_SERVICE);
+        long time =System.currentTimeMillis() - 30*24*60*60*1000;
+        List<UsageStats> list=m.queryUsageStats(UsageStatsManager.INTERVAL_BEST, time, System.currentTimeMillis());
+        Log.e("UsageStats",list.size() + "");
         return list;
     }
 
@@ -199,13 +142,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for (ApplicationInfo app : appInfos) {
-//            if((app.flags & ApplicationInfo.FLAG_SYSTEM) <= 0)//通过flag排除系统应用，会将电话、短信也排除掉
-//            {
-//                applicationInfos.add(app);
-//            }
-//            if(app.uid > 10000){//通过uid排除系统应用，在一些手机上效果不好
-//                applicationInfos.add(app);
-//            }
             if (allowPackages.contains(app.packageName)) {
                 applicationInfos.add(app);
             }

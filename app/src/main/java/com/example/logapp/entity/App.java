@@ -1,15 +1,19 @@
 package com.example.logapp.entity;
 
-import com.bin.david.form.annotation.SmartColumn;
-import com.bin.david.form.annotation.SmartTable;
+public class App {
 
-@SmartTable(name="应用列表信息列表")
-public class TableAppInfo {
+    public String appName;
 
-    @SmartColumn(id = 1,name = "应用名")
-    public String appName = "";
-    @SmartColumn(id = 2,name = "包名")
-    public String packageName = "";
+    public String packageName;
+
+    public App() {
+
+    }
+
+    public App(String appName, String packageName) {
+        this.appName = appName;
+        this.packageName = packageName;
+    }
 
     public String getAppName() {
         return appName;
@@ -26,5 +30,4 @@ public class TableAppInfo {
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
-
 }

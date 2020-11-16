@@ -31,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
         fragments = new ArrayList<>();
         fragments.add(new HomeFragment());
         fragments.add(new ChartFragment());
+        fragments.add(new ForecastFragment());
         fragments.add(new SettingFragment());
         // 初始化展示MessageFragment
         setFragmentPosition(0);
@@ -47,8 +48,11 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.navigation_chart:
                         setFragmentPosition(1);
                         break;
-                    case R.id.navigation_setting:
+                    case R.id.navigation_yuce:
                         setFragmentPosition(2);
+                        break;
+                    case R.id.navigation_setting:
+                        setFragmentPosition(3);
                         break;
                     default:
                         break;

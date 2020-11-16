@@ -9,10 +9,10 @@ public class TableInfo {
     @SmartColumn(id =1,name = "应用名")
     private String name;
     @SmartColumn(id=2,name="启动时间")
-    private Long start_time;
-    @SmartColumn(id=2,name="结束时间")
-    private Long end_time;
-    @SmartColumn(id=2,name="使用时间")
+    private String start_time;
+    @SmartColumn(id=3,name="结束时间")
+    private String end_time;
+    @SmartColumn(id=4,name="使用时间")
     private Long use_time;
 
     public String getName() {
@@ -23,19 +23,19 @@ public class TableInfo {
         this.name = name;
     }
 
-    public Long getStart_time() {
+    public String getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(Long start_time) {
+    public void setStart_time(String start_time) {
         this.start_time = start_time;
     }
 
-    public Long getEnd_time() {
+    public String getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(Long end_time) {
+    public void setEnd_time(String end_time) {
         this.end_time = end_time;
     }
 
