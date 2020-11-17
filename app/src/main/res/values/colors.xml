@@ -5,4 +5,13 @@
     <color name="colorAccent">#03DAC5</color>
 
     <color name="gray">#ff888888</color>
+
+    <color name="c_gray_6">#8a8a8a</color>
+    <color name="c_black_1">#000000</color>
+
+
+    <color name="report_item">#d3d7d4</color>
+    <color name="report_item_title">#90d7ec</color>
+    <color name="white">#F6EBEB</color>
+
 </resources>

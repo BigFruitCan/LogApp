@@ -56,8 +56,7 @@ public class ForecastFragment extends Fragment {
                         //解析结果
                         try {
                             JSONObject jsonObject = new JSONObject(result);
-                            JSONObject jsonList = jsonObject.getJSONObject("data");
-                            JSONArray array = jsonList.getJSONArray("dataList");
+                            JSONArray array = jsonObject.getJSONArray("dataList");
                             JSONObject array1 = array.getJSONObject(0);
                             JSONObject array2 = array.getJSONObject(1);
                             JSONObject array3 = array.getJSONObject(2);
@@ -87,7 +86,16 @@ public class ForecastFragment extends Fragment {
         ((ViewGroup) view.getParent()).removeView(view);
     }
 
-    //向服务器获取下个应用
+    /**
+     * 向服务器获取下个应用
+     * {"dataList":
+     *    [
+     *       {"appName":"qq","percent":"70%"},
+     *       {"appName":"微信","percent":"20%"},
+     *       {"appName":"支付宝","percent":"10%"}
+     *   ]
+     * }
+     */
     public String getAppName() {
         String result = "";
         try {

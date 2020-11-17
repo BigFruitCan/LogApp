@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--灰色8a8a8a18号字体，130宽，主要用于确认个人信息表格样式-->
+    <style name="style_table_gray6_18_130_text">
+        <!--<item name="android:layout_width">@dimen/dimen_0</item>-->
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/c_gray_6</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+
+
+    <!--黑色1c1c1c18号字体-->
+    <style name="style_table_black1_18_text">
+        <!--<item name="android:layout_width">@dimen/dimen_0</item>-->
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/c_black_1</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+</resources>

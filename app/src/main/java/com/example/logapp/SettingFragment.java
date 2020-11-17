@@ -77,7 +77,7 @@ public class SettingFragment extends Fragment {
 
 
         /**
-         * 数据发送格式,用户名放在url中传送:?uid=uid(int)
+         * 数据发送格式
          * {"dataList":
          *    [
          *       {"appName":"qq","packageName":"com.example.aa","startStamp":123456789,"endStamp":288927800,"useStamp":1288931400},

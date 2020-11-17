@@ -35,7 +35,7 @@ public class AppRunSeqGetService extends Service {
 
         //查询从某一时间段到另一时间段的总运行时间
         Long currentTime = Calendar.getInstance().getTimeInMillis();
-        Long startTime = currentTime - 24*60*60*1000;
+        Long startTime = currentTime - 7*24*60*60*1000;
         HashMap<String, String> packagesMap = getAllPackages();
         for(String s : packagesMap.keySet()) {
             Log.e(s,packagesMap.get(s));

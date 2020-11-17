@@ -3,9 +3,13 @@ package com.example.logapp;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -18,6 +22,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.bin.david.form.core.SmartTable;
+import com.bin.david.form.core.TableConfig;
+import com.bin.david.form.data.CellInfo;
+import com.bin.david.form.data.format.bg.BaseBackgroundFormat;
+import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat;
+import com.bin.david.form.data.format.bg.IBackgroundFormat;
+import com.bin.david.form.data.format.bg.ICellBackgroundFormat;
 import com.example.logapp.dao.RunInfoDBHelper;
 import com.example.logapp.entity.TableInfo;
 import com.example.logapp.service.AppRunSeqGetService;
@@ -31,7 +41,7 @@ public class HomeFragment extends Fragment {
 
     private View view;
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(view == null){
             view = inflater.inflate(R.layout.fragment_home, container, false);
         }
@@ -41,6 +51,33 @@ public class HomeFragment extends Fragment {
         List<TableInfo> list = getList(null,0L,0L,30);
         SmartTable table = (SmartTable<TableInfo>) view.findViewById(R.id.table2);
         table.setData(list);
+
+        //设置隔行显示不同颜色
+        ICellBackgroundFormat<CellInfo> backgroundFormat = new BaseCellBackgroundFormat<CellInfo>() {
+            @Override
+            public int getBackGroundColor(CellInfo cellInfo) {
+                if(cellInfo.row %2 == 0) {
+                    return ContextCompat.getColor(getContext(), R.color.report_item);
+                }
+                return TableConfig.INVALID_COLOR;
+            }
+        };
+        //设置每行 标题字体和背景
+        ICellBackgroundFormat<Integer> backgroundFormat2 = new BaseCellBackgroundFormat<Integer>() {
+            @Override
+            public int getBackGroundColor(Integer position) {
+                return ContextCompat.getColor(getContext(),R.color.report_item_title);
+            }
+            @Override
+            public int getTextColor(Integer position) {
+                if(position%2 == 0) {
+                    return ContextCompat.getColor(getContext(), R.color.white);
+                }
+                return TableConfig.INVALID_COLOR;
+            }
+        };
+        table.getConfig().setContentCellBackgroundFormat(backgroundFormat)
+                .setYSequenceCellBgFormat(backgroundFormat2);
 
         final EditText editText5 = (EditText) view.findViewById(R.id.editText5);
         editText5.setOnTouchListener(new View.OnTouchListener() {

@@ -8,24 +8,144 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/app_name"
-            android:layout_width="150dp"
+        <TableLayout
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dip"
-            android:text="123"
-            android:textSize="36sp" />
+            android:divider="@drawable/table_v_divider"
+            android:orientation="vertical"
+            android:showDividers="middle|beginning|end">
 
-        <TextView
-            android:id="@+id/package_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dip"
-            android:text="123"
-            android:textSize="36sp" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/table_h_divider"
+                android:orientation="horizontal"
+                android:showDividers="middle|beginning|end">
+
+                <TextView
+                    style="@style/style_table_gray6_18_130_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="10"
+                    android:text="应用信息" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/table_h_divider"
+                android:orientation="horizontal"
+                android:showDividers="middle|beginning|end">
+
+                <TextView
+                    style="@style/style_table_gray6_18_130_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="名称" />
+
+                <TextView
+                    android:id="@+id/tv_table_name"
+                    style="@style/style_table_black1_18_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    tools:text="微信" />
+
+                <TextView
+                    style="@style/style_table_gray6_18_130_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="包" />
+
+                <TextView
+                    android:id="@+id/tv_table_sex"
+                    style="@style/style_table_black1_18_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    tools:text="com.tecent.mm" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/table_h_divider"
+                android:orientation="horizontal"
+                android:showDividers="middle|beginning|end">
+
+                <TextView
+                    style="@style/style_table_gray6_18_130_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="上次启动" />
+
+                <TextView
+                    android:id="@+id/first_time"
+                    style="@style/style_table_black1_18_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    tools:text="2020年11月17日" />
+
+                <TextView
+                    style="@style/style_table_gray6_18_130_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="上次启动" />
+
+                <TextView
+                    android:id="@+id/last_time"
+                    style="@style/style_table_black1_18_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    tools:text="2020年11月17日" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/table_h_divider"
+                android:orientation="horizontal"
+                android:showDividers="middle|beginning|end">
+
+                <TextView
+                    style="@style/style_table_gray6_18_130_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="启动次数" />
+
+                <TextView
+                    android:id="@+id/launch_count"
+                    style="@style/style_table_black1_18_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    tools:text="89" />
+
+                <TextView
+                    style="@style/style_table_gray6_18_130_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="使用时间(ms)" />
+
+                <TextView
+                    android:id="@+id/use_time"
+                    style="@style/style_table_black1_18_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    tools:text="122020" />
+
+            </TableRow>
+
+
+        </TableLayout>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

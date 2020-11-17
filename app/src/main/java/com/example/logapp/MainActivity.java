@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -21,6 +20,7 @@ import android.widget.EditText;
 
 import com.example.logapp.dao.SqliteDBHelper;
 import com.example.logapp.entity.AppInfo;
+import com.example.logapp.service.AppRunSeqGetService;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -98,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
             }
             //关闭数据库
             db.close();
+
+            //调用服务更新runseq
+            Intent intent2 = new Intent(this, AppRunSeqGetService.class);
+            startService(intent2);
         } else {
             //如果是第二次启动则不设置其他
         }
@@ -115,11 +119,19 @@ public class MainActivity extends AppCompatActivity {
 
     //获取手机app运行数据 (默认为一月)
     public List<UsageStats> getAppRunInfo() {
-        UsageStatsManager m=(UsageStatsManager)getApplicationContext().getSystemService(Context.USAGE_STATS_SERVICE);
-        long time =System.currentTimeMillis() - 30*24*60*60*1000;
-        List<UsageStats> list=m.queryUsageStats(UsageStatsManager.INTERVAL_BEST, time, System.currentTimeMillis());
-        Log.e("UsageStats",list.size() + "");
-        return list;
+        /*Calendar calendar=Calendar.getInstance();
+        calendar.setTime(new Date());
+        long endt = calendar.getTimeInMillis();//结束时间
+        calendar.add(Calendar.DAY_OF_MONTH, -1);//时间间隔为一个月
+        long statt = calendar.getTimeInMillis();//开始时间*/
+
+        UsageStatsManager usageStatsManager=(UsageStatsManager) getSystemService(USAGE_STATS_SERVICE);
+        Long endt = System.currentTimeMillis();
+        Long statt = endt - 7*24*60*60*1000;
+        //获取一个月内的信息
+        List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY,statt,endt);
+        Log.e("UsageStats",queryUsageStats.size() + "");
+        return queryUsageStats;
     }
 
     //获取手机app信息列表
